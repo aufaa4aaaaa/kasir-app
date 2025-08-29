@@ -1,145 +1,95 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Kasir & Manajemen Stok</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kasir Toko - Sistem Manajemen Stok</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🏪 Sistem Kasir & Manajemen Stok</h1>
-            <div class="user-info">
-                <div class="role-selector">
-                    <span>Mode: </span>
-                    <button class="role-btn active" onclick="switchRole('cashier')">👤 Kasir</button>
-                    <button class="role-btn" onclick="switchRole('admin')">⚙️ Admin</button>
-                </div>
-                <div class="current-time" id="currentTime"></div>
-            </div>
-        </div>
+  <div class="container">
+    <header>
+      <div class="logo">🛒 Kasir Toko</div>
+      <p>Sistem Manajemen Stok dan Penjualan</p>
+    </header>
 
-        <!-- Cashier Section -->
-        <div id="cashierSection">
-            <div class="main-content">
-                <div class="panel">
-                    <h2>🛍️ Daftar Produk</h2>
-                    <div class="product-grid" id="productGrid"></div>
-                </div>
-
-                <div class="panel">
-                    <h2>🛒 Keranjang Belanja</h2>
-                    <div id="cartItems">
-                        <p style="text-align: center; color: #666; padding: 20px;">
-                            Keranjang masih kosong. Pilih produk untuk mulai transaksi.
-                        </p>
-                    </div>
-                    
-                    <div class="total-section" id="totalSection" style="display: none;">
-                        <div class="total-row">
-                            <span>Subtotal:</span>
-                            <span id="subtotal">Rp 0</span>
-                        </div>
-                        <div class="total-row">
-                            <span>Pajak (10%):</span>
-                            <span id="tax">Rp 0</span>
-                        </div>
-                        <div class="total-row final">
-                            <span>TOTAL:</span>
-                            <span id="total">Rp 0</span>
-                        </div>
-                        <button class="btn btn-success" style="width: 100%; margin-top: 15px;" onclick="processTransaction()">💳 Proses Transaksi</button>
-                        <button class="btn btn-warning" style="width: 100%; margin-top: 5px;" onclick="clearCart()">🗑️ Kosongkan Keranjang</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <h2>📋 Riwayat Transaksi Hari Ini</h2>
-                <div class="transaction-history" id="transactionHistory">
-                    <p style="text-align: center; color: #666; padding: 20px;">
-                        Belum ada transaksi hari ini.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Admin Section -->
-        <div id="adminSection" class="admin-section">
-            <div class="main-content">
-                <div class="panel">
-                    <h2>➕ Tambah/Edit Produk</h2>
-                    <div id="adminAlert"></div>
-                    <form id="productForm">
-                        <div class="form-group">
-                            <label for="productName">Nama Produk</label>
-                            <input type="text" id="productName" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productPrice">Harga (Rp)</label>
-                            <input type="number" id="productPrice" class="form-control" min="0" step="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productStock">Stok</label>
-                            <input type="number" id="productStock" class="form-control" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productCategory">Kategori</label>
-                            <select id="productCategory" class="form-control" required>
-                                <option value="">Pilih Kategori</option>
-                                <option value="makanan">Makanan</option>
-                                <option value="minuman">Minuman</option>
-                                <option value="snack">Snack</option>
-                                <option value="perlengkapan">Perlengkapan</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">💾 Simpan Produk</button>
-                        <button type="button" class="btn btn-warning" onclick="clearForm()">🔄 Reset Form</button>
-                    </form>
-                </div>
-
-                <div class="panel">
-                    <h2>📊 Manajemen Stok</h2>
-                    <table class="stock-table">
-                        <thead>
-                            <tr>
-                                <th>Nama Produk</th>
-                                <th>Harga</th>
-                                <th>Stok</th>
-                                <th>Kategori</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stockTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="panel">
-                <h2>📈 Laporan Penjualan</h2>
-                <div class="total-section">
-                    <div class="total-row">
-                        <span>Total Transaksi Hari Ini:</span>
-                        <span id="totalTransactions">0</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Total Pendapatan:</span>
-                        <span id="totalRevenue">Rp 0</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Produk Terjual:</span>
-                        <span id="totalItemsSold">0 item</span>
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="exportReport()">📊 Export Laporan</button>
-                <button class="btn btn-danger" onclick="resetData()">🗑️ Reset Data</button>
-            </div>
-        </div>
+    <div class="tabs">
+      <div class="tab active" data-tab="products">Produk</div>
+      <div class="tab" data-tab="cart">Keranjang</div>
+      <div class="tab" data-tab="admin">Admin</div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Produk Section -->
+    <div class="tab-content active" id="products-content">
+      <h2>Daftar Produk</h2>
+      <label for="category-filter">Filter Kategori:</label>
+      <select id="category-filter" style="margin-bottom: 15px; padding: 8px; font-size: 1rem;">
+        <option value="all">Semua Kategori</option>
+        <option value="makanan">Makanan</option>
+        <option value="minuman">Minuman</option>
+        <option value="snack">Snack</option>
+        <option value="perlengkapan">Perlengkapan</option>
+        <option value="dll">Dll</option>
+      </select>
+      <div class="products-grid" id="products-container">
+        <!-- Products will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Keranjang Section -->
+    <div class="tab-content" id="cart-content">
+      <h2>Keranjang Belanja</h2>
+      <div class="cart-items" id="cart-container">
+        <!-- Cart items will be loaded here -->
+      </div>
+      <div class="cart-total">
+        <div>Total Belanja: <span class="total-amount" id="total-amount">Rp 0</span></div>
+        <button class="checkout-btn" id="checkout-btn">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Admin Section -->
+    <div class="tab-content" id="admin-content">
+      <h2>Panel Admin</h2>
+      <div class="admin-form">
+        <h3>Tambah/Edit Produk</h3>
+        <div class="form-group">
+          <label for="product-name">Nama Produk</label>
+          <input type="text" id="product-name" placeholder="Masukkan nama produk" />
+        </div>
+        <div class="form-group">
+          <label for="product-price">Harga (Rp)</label>
+          <input type="number" id="product-price" placeholder="Masukkan harga" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="product-stock">Stok</label>
+          <input type="number" id="product-stock" placeholder="Masukkan stok" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="product-category">Kategori</label>
+          <select id="product-category">
+            <option value="makanan">Makanan</option>
+            <option value="minuman">Minuman</option>
+            <option value="snack">Snack</option>
+            <option value="perlengkapan">Perlengkapan</option>
+            <option value="dll">Dll</option>
+          </select>
+        </div>
+        <input type="hidden" id="edit-product-id" />
+        <div class="form-buttons">
+          <button class="btn btn-primary" id="save-product">Simpan Produk</button>
+          <button class="btn btn-secondary" id="cancel-edit" style="display: none;">Batal Edit</button>
+        </div>
+      </div>
+
+      <div class="products-list" id="admin-products-container">
+        <!-- Admin products list will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification">Operasi berhasil!</div>
+
+  <script src="script.js"></script>
 </body>
 </html>
